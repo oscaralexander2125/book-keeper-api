@@ -4,6 +4,6 @@ deploy:
   provider: heroku
   api_key:
     secure: rU9FkeTnUy3oYuFxkcZSSV8nYsVzgHIy4o2EEOZdcoZQiURNXhqGPhU4Sqe6MM/g268eWBZps7F4L8zqHnpJUVidqEmx/ZIRbOHO1TQpeZwIjjEQQIKIUVAv/W0+oZSr+h8DptXMlIgwCunDpwPffiuPHBzJuN49vVHjcqKwDeXit3+dxCsR+6TV92je3ttQboB/sdaB31i1LmFBbMbd1407DeABeblySVEFTj5aQLN304o6kZ43CKvb7PpvbzNSkiwyrXxSNyF5ul3QlDl6+dwtxKSJrxdTeLvDNR197ngOMfLuhtuCFL8I/9TtLv9xuwCkMW/cGyIJS2lUI26pMfUu03HWOQbjm+6R+9A5FNKjFRjItE3H5RhFCkgLkkkXVcyKGC0lFb1Y3YqZLzNaiyXNgeoXpeCV/z+tiPDWvWkBwfIY2VRA0jzwuFym2pV7cTdFox2DUEwaoS60Ge0IX+YxjPAZjkhQgYFUOQ2/v5WgUMfhGoJ1keDH0xRrCIWrKIiYAd16JdzH+TuBzRRP3aWLZqZXa3baWVPeoSvnJGaEc1FLV2VkwoAb8ygwzT3Dhc+37GvhYMGqRISfC7O6mKlEZ43njtmt5TNmWhxQ4TEGlqIOl5ochDy+HG+6D/VGSfadJ7oI3VPbrCfXtyiz20T3orLBm3wAOe6k9ExfWUA=
-  app: book-keeper-api
+  app: protected-garden-94777
   on:
     repo: oscaralexander2125/book-keeper-api
