@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose')
+const morgan = require('morgan');
 
 mongoose.Promise = global.Promise;
 
@@ -12,7 +13,7 @@ const {router: userRouter, User} = require('./users');
 const {DATABASE_URL, TEST_DATABASE_URL, PORT} = require('./config')
 
 app.use('/api/books', bookRouter);
-app.use('api/users', userRouter);
+app.use('/api/users', userRouter);
 
 app.use(function(req, res, next) {
   let err = new Error('Not Found')

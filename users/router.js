@@ -91,7 +91,7 @@ router.post('/', jsonParser, (req, res) => {
           reason: 'ValidationError',
           message: 'Profile already created with this email. Login instead.',
           location: 'email'
-        })
+        });
       }
 
       return User.hashPassword(password);
@@ -102,7 +102,7 @@ router.post('/', jsonParser, (req, res) => {
         password: hash,
         firstName,
         lastName
-      })
+      });
     })
     .then(user => {
       return res.status(201).json(user.serialize());
@@ -111,7 +111,14 @@ router.post('/', jsonParser, (req, res) => {
       if(err.reason === 'ValidationError') {
         return res.status(err.code).json(err);
       }
+      res.status(500).json({code: 500, message: 'Internal server error'});
     })
 })
+
+router.get('/', (req, res) => {
+  return User.find()
+    .then(users => res.json(users.map(user => user.serialize())))
+    .catch(err => res.status(500).json({message: 'Internal server error'}));
+});
 
 module.exports = {router};
