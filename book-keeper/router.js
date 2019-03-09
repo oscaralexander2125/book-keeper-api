@@ -16,7 +16,7 @@ router.get('/', (req, res) => {
 })
 
 router.post('/', (req, res) => {
-  const requiredFields = ['name', 'status'];
+  const requiredFields = ['name', 'status', 'public'];
   requiredFields.forEach((field, index) => {
     if(!(field in req.body)) {
       const message = `Missing \` ${field}\` in request body.`

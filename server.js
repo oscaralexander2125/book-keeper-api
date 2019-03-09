@@ -8,9 +8,11 @@ app.use(express.static('public'));
 app.use(express.json());
 
 const {router: bookRouter} = require('./book-keeper');
+const {router: userRouter, User} = require('./users');
 const {DATABASE_URL, TEST_DATABASE_URL, PORT} = require('./config')
 
 app.use('/api/books', bookRouter);
+app.use('api/users', userRouter);
 
 app.use(function(req, res, next) {
   let err = new Error('Not Found')
