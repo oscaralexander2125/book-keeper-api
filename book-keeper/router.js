@@ -50,11 +50,20 @@ router.post('/', (req, res) => {
   })
 })
 
-router.put('/:id', (req, res) => {
+router.put('/:id', (req, res, next) => {
   if(!(req.params.id && req.body.id && req.params.id === req.body.id)) {
     const message = `Request path id ${req.params.id} and request body ${req.body.id} must match.`;
     console.error(message);
     return res.status(400).json({message})
+  }
+
+  const status = ['read', 'unread', 'in-process'];
+  const bookStatus = req.body.status
+
+  if(bookStatus !==status[0] && bookStatus !==status[1] && bookStatus !==status[2]) {
+    const message = `Missing read, unread or in-process string in request.body.status`;
+    console.error(message);
+    return res.status(400).send(message);
   }
 
   const toUpdate = {};
@@ -68,13 +77,27 @@ router.put('/:id', (req, res) => {
 
   BookKeeper.findByIdAndUpdate(req.body.id, {$set:toUpdate}, {new: true})
   .then(updated => {
-    res.status(200).json(updated);
+    if(updated) {
+      res.status(200).json(updated);
+    }
+    else {
+      next();
+    }
   })
-  .catch(err => res.status(500).json({message: err}));
-})
+  .catch(next);
+});
 
-router.delete('/:id', (req, res) => {
-
-})
+router.delete('/:id', function(req, res, next) {
+  BookKeeper.findByIdAndRemove(req.params.id)
+  .then(count => {
+    if(!count) {
+      next();
+    }
+    else {
+      res.status(204).end();
+    }
+  })
+  .catch(next);
+});
 
 module.exports = {router}
