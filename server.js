@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose')
 const morgan = require('morgan');
+const passport = require('passport');
+require('dotenv').config();
 
 mongoose.Promise = global.Promise;
 
@@ -10,10 +12,25 @@ app.use(express.json());
 
 const {router: bookRouter} = require('./book-keeper');
 const {router: userRouter, User} = require('./users');
-const {DATABASE_URL, TEST_DATABASE_URL, PORT} = require('./config')
+const {router: authRouter, localStrategy, jwtStrategy} = require('./auth');
+const {DATABASE_URL, TEST_DATABASE_URL, PORT} = require('./config');
+
+passport.use(localStrategy);
+passport.use(jwtStrategy);
+
+app.use(function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE');
+  if (req.method === 'OPTIONS') {
+    return res.send(204);
+  }
+  next();
+})
 
 app.use('/api/books', bookRouter);
 app.use('/api/users', userRouter);
+app.use('/api/auth', authRouter);
 
 app.use(function(req, res, next) {
   let err = new Error('Not Found')
