@@ -19,6 +19,8 @@ const {DATABASE_URL, TEST_DATABASE_URL, PORT} = require('./config');
 passport.use(localStrategy);
 passport.use(jwtStrategy);
 
+const jwtAuth = passport.authenticate('jwt', {session: false});
+
 app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
@@ -33,6 +35,10 @@ app.use('/api/books', bookRouter);
 app.use('/api/users', userRouter);
 app.use('/api/auth', authRouter);
 
+app.get('/api/check', (req, res) => {
+  res.json({ok: true});
+});
+
 app.use(function(req, res, next) {
   let err = new Error('Not Found')
   err.status = 404;
@@ -45,10 +51,6 @@ app.use(function(err, req, res, next) {
     error: (process.env.NODE_ENV === 'development') ? err : {}
   })
 })
-
-app.get('/api/check', (req, res) => {
-  res.json({ok: true});
-});
 
 let server;
 
