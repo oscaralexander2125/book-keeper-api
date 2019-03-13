@@ -8,6 +8,7 @@ require('dotenv').config();
 mongoose.Promise = global.Promise;
 
 app.use(express.static('public'));
+app.use(morgan('common'));
 app.use(express.json());
 
 const {router: bookRouter} = require('./book-keeper');
@@ -83,7 +84,7 @@ function closeServer() {
   });
 };
 
-if(require.main ===module) {
+if(require.main === module) {
   runServer(DATABASE_URL).catch(err => console.error(err));
 }
 

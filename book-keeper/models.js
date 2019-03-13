@@ -10,7 +10,8 @@ const bookKeeperSchema = mongoose.Schema({
   status: {type:String, required: true},
   review: {type: String, default: ''},
   public: {type: String, required: true},
-  created:{type: Date, default: Date.now}
+  created:{type: Date, default: Date.now},
+  userId: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}
 })
 
 bookKeeperSchema.methods.serialize = function() {
@@ -20,7 +21,8 @@ bookKeeperSchema.methods.serialize = function() {
     author: this.author,
     status: this.status,
     public: this.public,
-    review: this.review
+    review: this.review,
+    userId: this.userId
   }
 }
 
