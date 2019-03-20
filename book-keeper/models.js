@@ -9,7 +9,7 @@ const bookKeeperSchema = mongoose.Schema({
   author: {type: String, default: ''},
   status: {type:String, required: true},
   review: {type: String, default: ''},
-  public: {type: String, required: true},
+  public: {type: String, default:'public', required: true},
   created:{type: Date, default: Date.now},
   userId: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}
 })
