@@ -31,3 +31,5 @@ const BookKeeper = mongoose.model('book', bookKeeperSchema);
 module.exports = {BookKeeper};
 
 //public or private.
+//<button data-key-id={this.props.book.id} onClick={(e) => doDelete(e)}> Delete </button>
+//event.currentTarget.getAttribute('data-key-id')

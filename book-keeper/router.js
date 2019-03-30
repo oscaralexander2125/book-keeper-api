@@ -12,10 +12,10 @@ const jwtAuth = passport.authenticate('jwt', {session: false});
 
 router.get('/', jwtAuth, (req, res) => {
   let {email} = req.user;
-
+  let status = req.query.status;
   User.findOne({email})
   .then(user => {
-    BookKeeper.find({userId: user._id})
+    BookKeeper.find({userId: user._id, status})
     .then(books => {
       res.json(books.map(book => book.serialize()))
     })
@@ -30,8 +30,20 @@ router.get('/', jwtAuth, (req, res) => {
   })
 })
 
+router.get('/public', jwtAuth, (req, res, next) => {
+  BookKeeper.find({public:'public'})
+  .then(books => {
+    if (!books) {
+      next();
+    } else {
+      res.json(books.map(book => book.serialize()))
+    }
+  })
+  .catch(next);
+})
+
 router.post('/', jwtAuth, (req, res, next) => {
-  const requiredFields = ['name', 'status', 'public'];
+  const requiredFields = ['name', 'status'];
   requiredFields.forEach((field, index) => {
     if(!(field in req.body)) {
       const message = `Missing \` ${field}\` in request body.`
@@ -48,11 +60,11 @@ router.post('/', jwtAuth, (req, res, next) => {
     return res.status(400).send(message);
   }
 
-  if(req.body.public !== 'public' && req.body.public !== 'private') {
+  /*if(req.body.public !== 'public' && req.body.public !== 'private') {
     const message = `Missing public or private in request body`;
     console.error(message);
     res.status(400).send(message);
-  };
+  };*/
 
   let {email} = req.user;
 
@@ -90,7 +102,7 @@ router.put('/:id', jwtAuth, (req, res, next) => {
   const status = ['read', 'unread', 'in-process'];
   const bookStatus = req.body.status
 
-  if(bookStatus !==status[0] && bookStatus !==status[1] && bookStatus !==status[2]) {
+  /*if(bookStatus !==status[0] && bookStatus !==status[1] && bookStatus !==status[2]) {
     const message = `Missing read, unread or in-process string in request.body.status`;
     console.error(message);
     return res.status(400).json({message});
@@ -100,7 +112,7 @@ router.put('/:id', jwtAuth, (req, res, next) => {
     const message = `Missing public or private in request body`;
     console.error(message);
     res.status(400).send({message});
-  };
+  };*/
 
   const toUpdate = {};
   const updateFields = ['name', 'author', 'status', 'public', 'review'];
@@ -130,7 +142,7 @@ router.delete('/:id', jwtAuth, function(req, res, next) {
       next();
     }
     else {
-      res.status(204).end();
+      res.status(201).json(count.serialize());
     }
   })
   .catch(next);
