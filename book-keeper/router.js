@@ -16,6 +16,7 @@ router.get('/', jwtAuth, (req, res) => {
   User.findOne({email})
   .then(user => {
     BookKeeper.find({userId: user._id, status})
+    .sort({created: -1})
     .then(books => {
       res.json(books.map(book => book.serialize()))
     })
