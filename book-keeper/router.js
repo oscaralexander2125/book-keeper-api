@@ -61,12 +61,6 @@ router.post('/', jwtAuth, (req, res, next) => {
     return res.status(400).send(message);
   }
 
-  /*if(req.body.public !== 'public' && req.body.public !== 'private') {
-    const message = `Missing public or private in request body`;
-    console.error(message);
-    res.status(400).send(message);
-  };*/
-
   let {email} = req.user;
 
   User.findOne({email})
